@@ -8,20 +8,25 @@ public class SortComplexity {
 
         Scanner scanner = new Scanner(System.in);
 
-        int amountArrays = 0, arraySize = 0;
+        int amountArrays = 0, arraySize = 0, i = 0;
+        long time, allTime = 0;
 
+        //EIN-/AUSGABE
         System.out.printf("%nAnzahl der zu sortierenden Arrays: ");
         amountArrays = scanner.nextInt();
 
-        System.out.println();
         System.out.printf("Größe der Arrays: ");
         arraySize = scanner.nextInt();
+        System.out.printf("");
 
-        for (int i = 0; i < amountArrays; i++) {
-
-            sortRandomArray(arraySize);
-            
+        //AUFRUF VON SORT RADNOM ARRAY
+        for (i = 0; i < amountArrays; i++) {
+            time = sortRandomArray(arraySize);
+            allTime += time;
+            System.out.printf("%nLaufzeit zur sortierung des %d. Arrays: %dms" , i+1,time);
         }
+
+        System.out.printf("%nDurchschnittszeit: %dms %n", allTime/i);
 
         
 
@@ -30,44 +35,53 @@ public class SortComplexity {
     // Sorts an array of random numbers and returns the sorting run time in ms
     public static long sortRandomArray(int length) {
 
-        int[] array = new int[length];
-        boolean switched;
-        int i = array.length - 1;
+        int[] array = generateRandomArray(length);
 
-        for (int x = 0; x <= length; i++) {
-            array[i] = (int) (Math.random() * (0 - 100)) + 100;
-        }
-
-        do {
-            switched = false;
-
-            for (int j = 0; j < i; i++) {
-                if (array[j] > array[j+1]) {
-                    int help = array[j];
-                    array[j] = array[j + 1];
-                    array[j + 1] = help;
-                    switched = true;
-                }
-            }
-            i--;
-        } while (switched || (i >= 0));
+        long before = System.currentTimeMillis();
+        sort(array);
+        long after = System.currentTimeMillis();
 
 
-        return 0;
+        return after - before;
     }
 
     // Returns an array of random numbers
     public static int[] generateRandomArray(int length) {
-        return null;
+
+        int[] array = new int[length];
+
+        for (int i = 0; i < length; i++) {
+            array[i] = (int) (Math.random() * (0 - 100)) + 100;
+        }
+
+        return array;
     }
 
     // Sorts an array of numbers in ascending order
     public static void sort(int[] array) {
 
+
+        boolean getauscht;
+
+
+        for (int j = 0; j < array.length - 1; j++) {
+            for (int i = j; i < array.length; i++) {
+                if (array[i] < array[j]) {
+                    swap(array, i, j);
+                }
+            }
+        }
+
     }
 
     // Swaps the array elements with index i and j
     public static void swap(int[] array, int i, int j) {
+        char hilf;
+
+        hilf = (char) array[i];
+        array[i] = array[j];
+        array[j] = hilf;
+
 
     }
 }
